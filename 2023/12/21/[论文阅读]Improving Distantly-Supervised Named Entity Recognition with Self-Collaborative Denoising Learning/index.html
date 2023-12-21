@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Improving Distantly-Supervised Named Entity Recognition with Self-Collaborative Denoising Learning | RainYu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="DS-NER" />
+  
+  
+  
+  
+  <meta name="description" content="[论文阅读]Improving Distantly-Supervised Named Entity Recognition with Self-Collaborative Denoising Learning通过自协作去噪学习改进远程监督命名实体识别 摘要远程监督命名实体识别（DS-NER）有效地降低了劳动力成本，但同时由于远程监督的强烈假设，本质上受到标签噪声的影响。通常，错误标记的实例包含大量">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Improving Distantly-Supervised Named Entity Recognition with Self-Collaborative Denoising Learning">
+<meta property="og:url" content="http://example.com/2023/12/21/[%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB]Improving%20Distantly-Supervised%20Named%20Entity%20Recognition%20with%20Self-Collaborative%20Denoising%20Learning/index.html">
+<meta property="og:site_name" content="RainYu">
+<meta property="og:description" content="[论文阅读]Improving Distantly-Supervised Named Entity Recognition with Self-Collaborative Denoising Learning通过自协作去噪学习改进远程监督命名实体识别 摘要远程监督命名实体识别（DS-NER）有效地降低了劳动力成本，但同时由于远程监督的强烈假设，本质上受到标签噪声的影响。通常，错误标记的实例包含大量">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-12-21T02:24:01.000Z">
+<meta property="article:modified_time" content="2023-12-21T03:16:56.678Z">
+<meta property="article:author" content="RainYu">
+<meta property="article:tag" content="DS-NER">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="RainYu" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/avatar.jpg">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="/js/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
+
+
+<header id="allheader" class="site-header" role="banner" 
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="RainYu" rel="home"> RainYu </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663" linktext="/"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663" linktext="archives"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663" linktext="categories"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663" linktext="tags"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663" linktext="about"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-[论文阅读]Improving Distantly-Supervised Named Entity Recognition with Self-Collaborative Denoising Learning" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Improving Distantly-Supervised Named Entity Recognition with Self-Collaborative Denoising Learning
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2023/12/21/%5B%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%5DImproving%20Distantly-Supervised%20Named%20Entity%20Recognition%20with%20Self-Collaborative%20Denoising%20Learning/" class="article-date">
+	  <time datetime="2023-12-21T02:24:01.000Z" itemprop="datePublished">十二月 21, 2023</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/EMNLP/">EMNLP</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="论文阅读-Improving-Distantly-Supervised-Named-Entity-Recognition-with-Self-Collaborative-Denoising-Learning"><a href="#论文阅读-Improving-Distantly-Supervised-Named-Entity-Recognition-with-Self-Collaborative-Denoising-Learning" class="headerlink" title="[论文阅读]Improving Distantly-Supervised Named Entity Recognition with Self-Collaborative Denoising Learning"></a>[论文阅读]Improving Distantly-Supervised Named Entity Recognition with Self-Collaborative Denoising Learning</h2><p>通过自协作去噪学习改进远程监督命名实体识别</p>
+<h3 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h3><p>远程监督命名实体识别（DS-NER）有效地降低了劳动力成本，但同时由于远程监督的强烈假设，本质上受到标签噪声的影响。通常，错误标记的实例包含大量不完整且不准确的注释噪声，而大多数现有的去噪工作仅涉及一种噪声，无法充分探索整个训练集中的有用信息。为了解决这个问题，我们提出了一种名为自协作去噪学习（SCDL）的强大学习范式，它以互惠互利的方式联合训练两个师生网络，以迭代地执行噪声标签精炼。每个网络都被设计为通过自去噪来利用可靠的标签，并且两个网络相互通信以通过协作去噪来探索不可靠的注释。对五个真实世界数据集的大量实验结果表明 SCDL 优于最先进的 DS-NER 去噪方法。</p>
+<span id="more"></span>
+
+<h3 id="大纲"><a href="#大纲" class="headerlink" title="大纲"></a>大纲</h3><p>以下是论文《Improving Distantly-Supervised Named Entity Recognition with Self-Collaborative Denoising Learning》的要点：</p>
+<ul>
+<li><p>该论文提出了一种名为Self-Collaborative Denoising Learning（SCDL）的新框架，用于改进远程监督的命名实体识别（DS-NER）。</p>
+</li>
+<li><p>DS-NER存在标签噪声问题，包括不完整的注释（由于资源覆盖有限）和不准确的注释（由于歧义）。</p>
+</li>
+<li><p>SCDL包括两个教师-学生网络，分别在自我去噪（内循环）和协同去噪（外循环）方面进行迭代。</p>
+</li>
+<li><p>对于自我去噪，每个教师-学生网络基于一致性和置信度选择可靠的标签，用于训练学生。通过学生的指数移动平均更新教师。</p>
+</li>
+<li><p>对于协同去噪，一个教师的伪标签被用来定期更新另一个网络的嘈杂标签。</p>
+</li>
+<li><p>对5个数据集的实验证明SCDL优于先前DS-NER领域的最新方法。它处理不完整和不准确的注释，而无需假设。</p>
+</li>
+<li><p>消融实验证实了自协同去噪框架的合理性和稳健性。</p>
+</li>
+<li><p>SCDL从整个训练集中探索有用信息，而不仅仅是像以前的工作那样减少标签噪声的影响。</p>
+</li>
+</ul>
+<p>总体而言，其主要贡献是提出了一种新的DS-NER训练范式，可以迭代地去噪标签并充分利用错误标记的数据。自协同方法在这种嘈杂标签的情境中被证明是有效的。</p>
+<h3 id="SCDL"><a href="#SCDL" class="headerlink" title="SCDL"></a>SCDL</h3><p>在这项工作中，我们努力弥合这一差距，并提出了一个名为 SCDL（自我协作去噪学习）的强大学习框架。 SCDL 共同训练两个师生网络，形成内环和外环，用于在没有任何假设的情况下应对标签噪声，并对错误标签的数据进行充分探索。每个师生网络内的内循环是一个自去噪方案，用于从两种噪声标签中选择可靠的注释，两个网络之间的外循环是一个协作去噪过程，用于将不可靠的实例纠正为有用的实例。具体来说，在内循环中，每个师生网络选择教师生成的一致且高置信度的标记令牌来训练学生，然后基于重新训练的学生通过指数移动平均（EMA）2逐步更新教师。至于外环，由于 EMA 的稳定性和两个网络之间不同的噪声敏感度，一个网络的老师生成的高质量伪标签被用来更新另一个网络的噪声标签。而且，内循环和外循环过程将交替执行。显然，成功的自降噪过程（内循环）可以生成高质量的伪标签，这对协作学习过程（外循环）有很大帮助，而有前途的外循环将通过细化噪声标签来促进内循环，从而处理标签噪声在 DS-NER 中有效。</p>
+<h3 id="师生网络"><a href="#师生网络" class="headerlink" title="师生网络"></a>师生网络</h3><p> <strong>Student and Teacher network</strong>指一个较小且较简单的模型（学生）被训练来模仿一个较大且较复杂的模型（教师）的行为或预测。教师网络通常是一个经过训练在大型数据集上并在特定任务上表现良好的模型。而学生网络被设计成计算效率高且参数较少的模型</p>
+<p>Student and Teacher network主要思想是利用教师网络的知识和经验来指导学生网络的学习过程。训练的过程被称为”知识蒸馏”。它涉及使用教师网络的预测结果和真实标签来训练学生网络。学生网络的损失函数通常由两部分组成：标准的交叉熵损失和蒸馏损失。蒸馏损失用来度量学生的预测与教师的软化、更概率化的输出之间的接近程度。</p>
+<p>知识蒸馏（Knowledge Distillation）是一种深度学习中的模型优化技术，用于将一个大型、复杂的模型的知识转移给一个小型、简单的模型。它的主要目标是让小型模型能够模仿大型模型的行为，并且在学习过程中，将大型模型的”知识”蒸馏（传递）给小型模型，使得小型模型在表现上能够接近或者甚至超过大型模型。基本思想是通过在训练过程中，使用大型模型的预测结果（通常是类别概率）来指导小型模型的学习过程。一般来说，知识蒸馏会在损失函数中添加一个额外的项，该项用于衡量小型模型的预测与大型模型的预测之间的相似性。这个相似性度量通常使用交叉熵损失函数或其他类似的距离度量。</p>
+<h3 id="核心工作"><a href="#核心工作" class="headerlink" title="核心工作"></a>核心工作</h3><p>在这项工作中，我们努力弥合这一差距，并提出了一个名为 SCDL（自我协作去噪学习）的强大学习框架。 SCDL 共同训练两个师生网络，形成内环和外环，用于在没有任何假设的情况下应对标签噪声，并对错误标签的数据进行充分探索。每个师生网络内的内循环是一个自去噪方案，用于从两种噪声标签中选择可靠的注释，两个网络之间的外循环是一个协作去噪过程，用于将不可靠的实例纠正为有用的实例。具体来说，在内循环中，每个师生网络选择教师生成的一致且高置信度的标记令牌来训练学生，然后基于重新训练的学生通过指数移动平均（EMA）逐步更新教师。至于外环，由于 EMA 的稳定性和两个网络之间不同的噪声敏感度，一个网络的老师生成的高质量伪标签被用来更新另一个网络的噪声标签。而且，内循环和外循环过程将交替执行。显然，成功的自降噪过程（内循环）可以生成高质量的伪标签，这对协作学习过程（外循环）有很大帮助，而有前途的外循环将通过细化噪声标签来促进内循环，从而处理标签噪声在 DS-NER 中有效。</p>
+<p><strong>知识蒸馏（Knowledge Distillation）</strong>是一种深度学习中的模型优化技术，用于将一个大型、复杂的模型的知识转移给一个小型、简单的模型。它的主要目标是让小型模型能够模仿大型模型的行为，并且在学习过程中，将大型模型的”知识”蒸馏（传递）给小型模型，使得小型模型在表现上能够接近或者甚至超过大型模型。</p>
+<p><strong>DS-NER</strong></p>
+<p>DS-NER是distantly supervised named entity recognition的缩写,表示基于远程监督的命名实体识别。</p>
+<p>命名实体识别(NER)任务是识别文本中出现的实体 span,并对其进行分类,如人名、地名组织名等。远程监督是一种半自动标注文本的方法。</p>
+<p>DS-NER 的基本思想是:</p>
+<ol>
+<li>使用外部资源(知识图谱、词典等)中已知的实体词条,去匹配未标注的文本中出现的词语。</li>
+<li>如果一个词语能在外部资源中找到,就自动标注为相应类别的命名实体。</li>
+<li>这样可以快速地为大规模文本生成标注,构建用于 NER 模型训练的数据集。</li>
+</ol>
+<p>与人工标注相比,DS-NER 大幅减少了标注成本,但也会引入一些噪声:</p>
+<ul>
+<li>不完整标注:文本中某些实体无法在外部资源中找到,被错误标注为非实体。</li>
+<li>不准确标注:同一词语根据上下文可能属于不同类型,简单匹配会引入歧义。</li>
+</ul>
+<p><strong>EMA</strong></p>
+<p>EMA是Exponential Moving Average的缩写,表示指数移动平均。它是一种给予最近数据更高权重的平均方法,用于模型参数的更新。</p>
+<p>具体来说,EMA的计算公式如下:</p>
+<p>EMA_t &#x3D; α * EMA_{t-1} + (1 - α) * 当前值 </p>
+<p>这里:</p>
+<ul>
+<li><p>EMA_t 是当前时刻t的指数移动平均值</p>
+</li>
+<li><p>EMA_{t-1} 是上一时刻的指数移动平均值 </p>
+</li>
+<li><p>当前值是新的值</p>
+</li>
+<li><p>α是平滑系数,取值在0到1之间。</p>
+</li>
+</ul>
+<p>可以观察到,上一时刻的指数移动平均值EMA_{t-1}会与当前新值进行加权平均。α控制老值的权重,近期数据的权重为1-α。</p>
+<p>当α取值越大,给予历史值的权重就越大,平滑效果更明显。</p>
+<p>EMA的优点是:</p>
+<ul>
+<li><p>提高了模型参数更新的稳定性和平滑性。</p>
+</li>
+<li><p>相比普通移动平均,EMA给予了最近数据更高的权重。</p>
+</li>
+<li><p>相比只使用当前信息,EMA考虑了历史信息。</p>
+</li>
+</ul>
+<p>在SCDL中,利用EMA来更新老师模型的参数,可以提供更可靠和稳定的伪标签,从而指导学生模型的训练。这比单次更新参数的效果更好。</p>
+<p><strong>根据第四部分，我对该模型的理解是：</strong></p>
+<ol>
+<li>自我去噪学习(Self Denoising Learning)</li>
+</ol>
+<p>这个部分提出了一个Teacher-Student网络来进行自我去噪。</p>
+<p>(1) Teacher模型先基于当前参数,对训练数据生成伪标签。</p>
+<p>(2) 然后根据两点选择可靠的标注:</p>
+<ul>
+<li><p>一致性预测:如果伪标签和原始噪声标签一致,则视为可靠。</p>
+</li>
+<li><p>高置信度预测:如果伪标签的预测概率很高,则可靠。</p>
+</li>
+</ul>
+<p>(3) 把选择的可靠标注和原始标签组合,用于训练Student。</p>
+<p>(4) Student通过反向传播更新参数。</p>
+<p>(5) 使用指数滑动平均(EMA)来更新Teacher,EMA可以平滑和稳定参数。</p>
+<p>通过上面这个内循环,可以在训练过程中去除噪声,提炼可靠标注。</p>
+<ol start="2">
+<li>协同去噪学习(Collaborative Denoising Learning)</li>
+</ol>
+<p>这个部分提出使用两个Teacher-Student网络,让它们互相协同去噪。</p>
+<p>(1) 定期使用一个网络的Teacher生成的伪标签,来更新另一个网络的噪声标签。</p>
+<p>(2) 两个网络有不同的学习能力,可以探索对方漏掉的信息,实现协同。</p>
+<p>(3) 内循环去除自身噪声,外循环可以纠正对方的错误标注。</p>
+<p>(4) 两者交替进行,相互促进,可以不断提炼标注质量。</p>
+<p>这样通过协同学习,可以探索原始标签中的更多有用信息,防止过度去噪。</p>
+<ol start="3">
+<li>总体流程</li>
+</ol>
+<p>(1) 使用原始噪声标签进行预训练</p>
+<p>(2) 开始自我去噪和协同去噪的内外循环交替进行</p>
+<p>(3) 循环一定步数后,在Teacher和Student中选择最好的模型</p>
+<p>通过这个方式,可以充分发挥噪声标注中包含的有用信息,实现名称实体识别任务的去噪。</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/EMNLP/">EMNLP</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DS-NER/" rel="tag">DS-NER</a></li></ul>
+
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2023/12/21/%5B%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%5DHorizontal%20Privilege%20Escalation%20in%20Trusted%20Applications/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Horizontal Privilege Escalation in Trusted Applications
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/12/21/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Hello World</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB-Improving-Distantly-Supervised-Named-Entity-Recognition-with-Self-Collaborative-Denoising-Learning"><span class="nav-number">1.</span> <span class="nav-text">[论文阅读]Improving Distantly-Supervised Named Entity Recognition with Self-Collaborative Denoising Learning</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%91%98%E8%A6%81"><span class="nav-number">1.1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%A7%E7%BA%B2"><span class="nav-number">1.2.</span> <span class="nav-text">大纲</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SCDL"><span class="nav-number">1.3.</span> <span class="nav-text">SCDL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%88%E7%94%9F%E7%BD%91%E7%BB%9C"><span class="nav-number">1.4.</span> <span class="nav-text">师生网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E5%B7%A5%E4%BD%9C"><span class="nav-number">1.5.</span> <span class="nav-text">核心工作</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2023 RainYu All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hipaper" target="_blank">hipaper</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/bootstrap.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>
