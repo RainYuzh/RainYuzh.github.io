@@ -54,32 +54,10 @@
 
 
   
-  
-  <div class="site-header-image">
-  </div>
-
-  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 0px; min-height: 0px; min-width: 0%;">
-    <img id="blurBg" width="0%" style="top: 0%" alt="Hike News" src="">
-  </div>
-
-  <script>
-        var imgUrls = "".split(",");
-        var random = Math.floor((Math.random() * imgUrls.length ));
-        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
-          document.getElementById("originBg").src=imgUrls[random];
-          document.getElementById("blurBg").src=imgUrls[random];
-        } else {
-          document.getElementById("originBg").src='/' + imgUrls[random];
-          document.getElementById("blurBg").src='/' + imgUrls[random];
-        }
-    </script>
 
 
-
-
-<header id="allheader" class="site-header" role="banner" 
-   style="width: 100%; height: 100px; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
-  <div class="clearfix container">
+<header id="allheader" class="site-header" role="banner" >
+   <div class="clearfix container">
       <div class="site-branding">
 
           <h1 class="site-title">
@@ -656,9 +634,6 @@
 
 
     <!-- headerblur min height -->
-    
-      var headerblur = document.getElementById("header-blur");
-      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>
