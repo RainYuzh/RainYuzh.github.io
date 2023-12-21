@@ -3,25 +3,20 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Horizontal Privilege Escalation in Trusted Applications | RainYu</title>
+  <title>test | RainYu</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="keywords" content="系统安全" />
   
   
   
-  
-  <meta name="description" content="[论文阅读]Horizontal Privilege Escalation in Trusted Applications摘要可信执行环境 (TEE) 使用基于硬件的隔离来保护敏感数据免受传统单片操作系统的影响。 虽然这种隔离增强了安全保证，但它也在一侧的 TEE 与另一侧的传统操作系统和应用程序之间引入了语义差距。 在这项工作中，我们研究了这种语义差距对流行 TEE 中运行的可信应用程序 (TA">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Horizontal Privilege Escalation in Trusted Applications">
-<meta property="og:url" content="http://example.com/2023/12/21/[%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB]Horizontal%20Privilege%20Escalation%20in%20Trusted%20Applications/index.html">
+  <meta property="og:type" content="article">
+<meta property="og:title" content="test">
+<meta property="og:url" content="http://example.com/2023/12/21/test/index.html">
 <meta property="og:site_name" content="RainYu">
-<meta property="og:description" content="[论文阅读]Horizontal Privilege Escalation in Trusted Applications摘要可信执行环境 (TEE) 使用基于硬件的隔离来保护敏感数据免受传统单片操作系统的影响。 虽然这种隔离增强了安全保证，但它也在一侧的 TEE 与另一侧的传统操作系统和应用程序之间引入了语义差距。 在这项工作中，我们研究了这种语义差距对流行 TEE 中运行的可信应用程序 (TA">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-12-21T02:24:01.000Z">
-<meta property="article:modified_time" content="2023-12-21T03:16:42.888Z">
+<meta property="article:published_time" content="2023-12-21T03:53:25.000Z">
+<meta property="article:modified_time" content="2023-12-21T03:53:25.814Z">
 <meta property="article:author" content="RainYu">
-<meta property="article:tag" content="系统安全">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="RainYu" type="application/atom+xml">
@@ -129,7 +124,7 @@
             
       <div id="content" class="outer">
         
-          <section id="main" style="float:none;"><article id="post-[论文阅读]Horizontal Privilege Escalation in Trusted Applications" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+          <section id="main" style="float:none;"><article id="post-test" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -137,7 +132,7 @@
         
   
     <h1 class="thumb" class="article-title" itemprop="name">
-      Horizontal Privilege Escalation in Trusted Applications
+      test
     </h1>
   
 
@@ -145,14 +140,11 @@
     
     <div class="article-meta">
       
-	<a href="/2023/12/21/%5B%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%5DHorizontal%20Privilege%20Escalation%20in%20Trusted%20Applications/" class="article-date">
-	  <time datetime="2023-12-21T02:24:01.000Z" itemprop="datePublished">十二月 21, 2023</time>
+	<a href="/2023/12/21/test/" class="article-date">
+	  <time datetime="2023-12-21T03:53:25.000Z" itemprop="datePublished">十二月 21, 2023</time>
 	</a>
 
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/USENIX/">USENIX</a>
- 
+       
       
 	<span id="busuanzi_container_page_pv">
 	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
@@ -161,27 +153,12 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="论文阅读-Horizontal-Privilege-Escalation-in-Trusted-Applications"><a href="#论文阅读-Horizontal-Privilege-Escalation-in-Trusted-Applications" class="headerlink" title="[论文阅读]Horizontal Privilege Escalation in Trusted Applications"></a>[论文阅读]Horizontal Privilege Escalation in Trusted Applications</h2><h3 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a><strong>摘要</strong></h3><p>可信执行环境 (TEE) 使用基于硬件的隔离来保护敏感数据免受传统单片操作系统的影响。 虽然这种隔离增强了安全保证，但它也在一侧的 TEE 与另一侧的传统操作系统和应用程序之间引入了语义差距。</p>
-<p>在这项工作中，我们研究了这种语义差距对流行 TEE 中运行的可信应用程序 (TA) 处理敏感数据的影响。 我们发现 TA 中的 (i) 多租户和 (ii) 有状态这两个属性的组合会导致水平权限升级 (HPE) 的漏洞。 这些漏洞泄露了敏感会话数据或提供了加密预言机，而无需 TEE 逻辑中的代码执行漏洞。</p>
-<p>我们发现，在三个基于 ARM TrustZone 的主要可信操作系统上运行的 95 个 TA 中存在 19 个 HPE 漏洞。 我们的结果表明，HPE 攻击可用于解密受 DRM 保护的内容、伪造证明以及获取所有三种评估操作系统下的加密密钥。</p>
-<p>在这里，我们推出了 HOOPER，一种基于自动符号执行的 HPE 漏洞扫描程序，以帮助手动分析并显着减少总体时间。 特别是，在 Teegris Trusted OS 中，HOOPER 能够在 24 小时内识别出 24 个基于 HPE 的攻击流中的 19 个，而我们最初的手动分析时间约为 4 周。</p>
-<span id="more"></span>
-
-<h3 id="TrustZone"><a href="#TrustZone" class="headerlink" title="TrustZone"></a>TrustZone</h3><p>是一种安全技术，由ARM（一家处理器架构设计公司）提出并实现。这项技术旨在提供硬件级别的安全性，通过创建一个被称为”Secure World”的安全执行环境与”Normal World”的普通执行环境之间的隔离来保护敏感数据和执行敏感任务。</p>
-<p>在TrustZone技术中，处理器被划分为两个不同的安全域，即Secure World和Normal World。Secure World是一个受信任的执行环境，用于运行安全关键任务，例如处理加密密钥、身份验证和其他敏感操作。Normal World则是通常的执行环境，用于运行常规应用程序和操作系统。</p>
-<p>TrustZone通过硬件隔离和访问控制来确保Secure World中的代码和数据对Normal World是不可见和不可访问的。这样，即使Normal World中的操作系统或应用程序受到攻击，攻击者也无法直接访问Secure World中的敏感信息。这种硬件隔离提供了一定程度的安全性，使得TrustZone技术广泛用于移动设备、物联网设备和其他需要安全性保障的场景。</p>
-
+        <span id="more"></span>
       
     </div>
     <footer class="entry-meta entry-footer">
       
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/USENIX/">USENIX</a>
-
       
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8/" rel="tag">系统安全</a></li></ul>
-
      
     </footer>
     <hr class="entry-footer-hr">
@@ -190,19 +167,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2023/12/21/Skip-gram%E6%A8%A1%E5%9E%8B%E7%90%86%E8%A7%A3/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">上一篇</strong>
-      <div class="article-nav-title">
-        
-          Skip-gram模型理解
-        
-      </div>
-    </a>
   
-  
-    <a href="/2023/12/21/first/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2023/12/21/Skip-gram%E6%A8%A1%E5%9E%8B%E7%90%86%E8%A7%A3/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">first</div>
+      <div class="article-nav-title">Skip-gram模型理解</div>
     </a>
   
 </nav>
@@ -216,7 +184,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
     
-      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB-Horizontal-Privilege-Escalation-in-Trusted-Applications"><span class="nav-number">1.</span> <span class="nav-text">[论文阅读]Horizontal Privilege Escalation in Trusted Applications</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%91%98%E8%A6%81"><span class="nav-number">1.1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TrustZone"><span class="nav-number">1.2.</span> <span class="nav-text">TrustZone</span></a></li></ol></li></ol>
+      <ol class="nav">无</ol>
     
     </div>
   </aside>
