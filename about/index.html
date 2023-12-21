@@ -56,6 +56,27 @@
 
 
   
+  
+  <div class="site-header-image">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 0px; min-height: 0px; min-width: 0%;">
+    <img id="blurBg" width="0%" style="top: 0%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
 
 
 <header id="allheader" class="site-header" role="banner" 
@@ -248,6 +269,18 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
+              <h6 style="margin: 0;"><a href="/2023/12/21/test/">test</a></h6>
+              <span>十二月 21, 2023</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
               <h6 style="margin: 0;"><a href="/2023/12/21/Skip-gram%E6%A8%A1%E5%9E%8B%E7%90%86%E8%A7%A3/">Skip-gram模型理解</a></h6>
               <span>十二月 21, 2023</span>
             </div>
@@ -260,7 +293,7 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2023/12/21/%5B%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%5DHorizontal%20Privilege%20Escalation%20in%20Trusted%20Applications/">Horizontal Privilege Escalation in Trusted Applications</a></h6>
+              <h6 style="margin: 0;"><a href="/2023/12/21/%5B%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%5DImproving%20Distantly-Supervised%20Named%20Entity%20Recognition%20with%20Self-Collaborative%20Denoising%20Learning/">Improving Distantly-Supervised Named Entity Recognition with Self-Collaborative Denoising Learning</a></h6>
               <span>十二月 21, 2023</span>
             </div>
 
@@ -272,7 +305,7 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2023/12/21/%5B%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%5DImproving%20Distantly-Supervised%20Named%20Entity%20Recognition%20with%20Self-Collaborative%20Denoising%20Learning/">Improving Distantly-Supervised Named Entity Recognition with Self-Collaborative Denoising Learning</a></h6>
+              <h6 style="margin: 0;"><a href="/2023/12/21/%5B%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%5DHorizontal%20Privilege%20Escalation%20in%20Trusted%20Applications/">Horizontal Privilege Escalation in Trusted Applications</a></h6>
               <span>十二月 21, 2023</span>
             </div>
 
@@ -329,7 +362,7 @@
     <h3 class="widget-title">归档</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -384,6 +417,9 @@
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>
