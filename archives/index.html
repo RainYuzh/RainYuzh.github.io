@@ -54,32 +54,10 @@
 
 
   
-  
-  <div class="site-header-image">
-    	<img id="originBg" width="100%" alt="Hike News" src="">
-  </div>
-
-  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 0px; min-height: 0px; min-width: 0%;">
-    <img id="blurBg" width="0%" style="top: 0%" alt="Hike News" src="">
-  </div>
-
-  <script>
-        var imgUrls = "".split(",");
-        var random = Math.floor((Math.random() * imgUrls.length ));
-        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
-          document.getElementById("originBg").src=imgUrls[random];
-          document.getElementById("blurBg").src=imgUrls[random];
-        } else {
-          document.getElementById("originBg").src='/' + imgUrls[random];
-          document.getElementById("blurBg").src='/' + imgUrls[random];
-        }
-    </script>
-
-
 
 
 <header id="allheader" class="site-header" role="banner" 
-   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+   >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -266,13 +244,13 @@
   <div class="archive-article-inner">
     <header class="archive-article-header">
 
-      <a href="/2023/12/21/first/" class="archive-article-date">
-		  <time datetime="2023-12-21T02:24:01.000Z" itemprop="datePublished">12月 21, 2023</time>
+      <a href="/2023/12/21/hello-world/" class="archive-article-date">
+		  <time datetime="2023-12-21T02:00:21.860Z" itemprop="datePublished">12月 21, 2023</time>
 	  </a>
       
   
     <h1 class="thumb" itemprop="name">
-      <a class="archive-article-title" href="/2023/12/21/first/">first</a>
+      <a class="archive-article-title" href="/2023/12/21/hello-world/">Hello World</a>
     </h1>
   
 
@@ -282,17 +260,27 @@
 	
 		
 		
+		  
+		    </div></section>
+		  
+		  
+		  <section class="archives-wrap">
+		    <div class="archive-year-wrap">
+		      <h1><a href="/archives/2022" class="archive-year">2022</a></h1>
+		    </div>
+		    <div class="archives">
+		
 		<article class="archive-article archive-type-post">
   <div class="archive-article-inner">
     <header class="archive-article-header">
 
-      <a href="/2023/12/21/hello-world/" class="archive-article-date">
-		  <time datetime="2023-12-21T02:00:21.860Z" itemprop="datePublished">12月 21, 2023</time>
+      <a href="/2022/12/21/ZhouYuQi'sBlog/" class="archive-article-date">
+		  <time datetime="2022-12-21T02:24:01.000Z" itemprop="datePublished">12月 21, 2022</time>
 	  </a>
       
   
     <h1 class="thumb" itemprop="name">
-      <a class="archive-article-title" href="/2023/12/21/hello-world/">Hello World</a>
+      <a class="archive-article-title" href="/2022/12/21/ZhouYuQi'sBlog/">first</a>
     </h1>
   
 
@@ -517,7 +505,7 @@
     <h3 class="widget-title">归档</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a><span class="archive-list-count">8</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">十二月 2022</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -572,9 +560,6 @@
 
 
     <!-- headerblur min height -->
-    
-      var headerblur = document.getElementById("header-blur");
-      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>
