@@ -185,7 +185,7 @@
 <p><strong>EMA</strong></p>
 <p>EMA是Exponential Moving Average的缩写,表示指数移动平均。它是一种给予最近数据更高权重的平均方法,用于模型参数的更新。</p>
 <p>具体来说,EMA的计算公式如下:</p>
-<p>EMA_t &#x3D; α * EMA_{t-1} + (1 - α) * 当前值 </p>
+<p>EMA_t = α * EMA_{t-1} + (1 - α) * 当前值 </p>
 <p>这里:</p>
 <ul>
 <li><p>EMA_t 是当前时刻t的指数移动平均值</p>
@@ -341,6 +341,9 @@
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

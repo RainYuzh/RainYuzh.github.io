@@ -152,7 +152,7 @@
 </ul>
 <p>因此人们为了能够寻找一种能够更好的体现词语之间的关系，提出了word2vec模型，让nlp技术进入了词嵌入的时代，为后面的研究打下了坚实的基础。</p>
 <h3 id="Skip-gram模型"><a href="#Skip-gram模型" class="headerlink" title="Skip-gram模型"></a>Skip-gram模型</h3><p>word2vec模型中，有skipgram和CBOW两种模型，两种模型结构分别如下图：</p>
-<p>![image-20231111161254258](&#x2F;Users&#x2F;zhouyuqi&#x2F;Library&#x2F;Application Support&#x2F;typora-user-images&#x2F;image-20231111161254258.png)</p>
+<p>![image-20231111161254258](/Users/zhouyuqi/Library/Application Support/typora-user-images/image-20231111161254258.png)</p>
 <p>相关链接：<a target="_blank" rel="noopener" href="https://rohanvarma.me/Word2Vec/">https://rohanvarma.me/Word2Vec/</a></p>
 <p>从上面的图中，我们可以直观的看出两种模型之间的区别，CBOW主要靠中心词的上下文来预测中心词，而skip-gram则依靠中心词来预测他的上下文。本文主要介绍skip-gram模型。</p>
 <h3 id="训练目标"><a href="#训练目标" class="headerlink" title="训练目标"></a>训练目标</h3><p><strong>skip-gram模型的训练目标</strong>：预测文本中某个字周围可能出现的词</p>
@@ -160,11 +160,11 @@
 <p>为了完成上面的训练目标，skip-gram模型有一个长度为<strong>2c+1的滑动窗口</strong>（上图为5），这个窗口会在语料库中滑动，每滑动以此，被窗口包括在内的2c+1个词就会被用与模型的训练。窗口中心的词作为已知的词，而中心词前c个和后c个词则被盖住，我们需要通过已知的词来预测被盖住的词。我们不需要对文本做任何标记 ，也就是说这是一个<strong>非监督算法</strong>。</p>
 <p>举个例子：<br>此时在我们滑动窗口内的句子为“今天 的 天气 很 好”<br>此时窗口长度为5，那么在窗口中心的词即“天气”，我们希望机器能够通过“天气”来预测“今天，的，很，好”这四个词语（称为背景词）。机器只会用数据说话，所以它会将他的预测表示成条件概率形式：P(今天,的,很,好∣天气)</p>
 <p>我们假设四个被预测的之间是相互独立的，那么公式可以变成:P(今天∣天气)P(的∣天气)P(很∣天气)P(好∣天气)，我们需要做的就是让这个概率尽可能的大。</p>
-<h3 id="优化目标"><a href="#优化目标" class="headerlink" title="优化目标"></a>优化目标</h3><p><strong>skip-gram模型的优化目标</strong>：<br>$$<br>\sum_{t&#x3D;1}^T \sum_{-c \leq j \leq c, j \neq 0} \log P\left(w_{t+j} \mid w_t\right)<br>$$<br>这个式子即上面式子的归纳，T为文本长度，c为上下窗口大小。还是拿上面那句话来举例，假设我们的整个语料库为：“<strong>今天 的 天气 很 好</strong>”,但是这次我们把上下窗口大小设为3（c&#x3D;1）,依次滑动窗口，并将各窗口的式子相乘<br>$$<br>MaxP(的∣今天）P(今天∣的)P(天气∣的)P(的∣天气)P(很∣天气)P(天气∣很)P(好∣很)P(很∣好)<br>$$<br>此式子经过整理后就可以变成：<br>$$<br>\prod_{t&#x3D;1}^{\mathrm{T}} \prod_{-\mathrm{c} \leq \mathrm{j} \leq \mathrm{c}, \mathrm{j} \neq 0} \mathrm{P}\left(\mathrm{w}<em>{\mathrm{t}+\mathrm{j}} \mid \mathrm{w}</em>{\mathrm{t}}\right)<br>$$<br>由于概率的连乘会导致最终的乘积非常小，因此我们考虑对式子的每一项进行log处理，使得乘积变大的同时还不会改变其单调性。处理之后，我们就可以得到一开始的优化目标。</p>
+<h3 id="优化目标"><a href="#优化目标" class="headerlink" title="优化目标"></a>优化目标</h3><p><strong>skip-gram模型的优化目标</strong>：<br>$$<br>\sum_{t=1}^T \sum_{-c \leq j \leq c, j \neq 0} \log P\left(w_{t+j} \mid w_t\right)<br>$$<br>这个式子即上面式子的归纳，T为文本长度，c为上下窗口大小。还是拿上面那句话来举例，假设我们的整个语料库为：“<strong>今天 的 天气 很 好</strong>”,但是这次我们把上下窗口大小设为3（c=1）,依次滑动窗口，并将各窗口的式子相乘<br>$$<br>MaxP(的∣今天）P(今天∣的)P(天气∣的)P(的∣天气)P(很∣天气)P(天气∣很)P(好∣很)P(很∣好)<br>$$<br>此式子经过整理后就可以变成：<br>$$<br>\prod_{t=1}^{\mathrm{T}} \prod_{-\mathrm{c} \leq \mathrm{j} \leq \mathrm{c}, \mathrm{j} \neq 0} \mathrm{P}\left(\mathrm{w}<em>{\mathrm{t}+\mathrm{j}} \mid \mathrm{w}</em>{\mathrm{t}}\right)<br>$$<br>由于概率的连乘会导致最终的乘积非常小，因此我们考虑对式子的每一项进行log处理，使得乘积变大的同时还不会改变其单调性。处理之后，我们就可以得到一开始的优化目标。</p>
 <p>接下来我们对式子的单项来进行讨论,为了对其有更好的理解，我们将单式改为以下形式：P(c∣w;θ)<br>c表示要预测的上下文词，w代表中心词，θ 代表模型参数，也可以理解成词向量，在预测词和中心词确定的情况下，概率由θ影响，我们优化也主要对它进行优化。</p>
 <p>对于θ，我们可以这么理解：<br>它由两个矩阵u和v构成，u为上下文矩阵，v为中心词矩阵，两个矩阵的大小都为∣ V ∣ × n,其中∣ V ∣表示词库大小，n表示我们训练出来的词向量的维度。这两个矩阵，就是我们要训练的参数。在skip-gram中，每个词都被表示成两个d维向量分别保存在上下文矩阵和中心词矩阵中，在相应的时候取出来用。</p>
-<p>![image-20231111163730178](&#x2F;Users&#x2F;zhouyuqi&#x2F;Library&#x2F;Application Support&#x2F;typora-user-images&#x2F;image-20231111163730178.png)</p>
-<p>假设我们的中心词为w，要预测的背景词为c，那么我们要求的给定中心词生成背景词的条件概率就可以表示成如下形式：<br>$$<br>\mathrm{P}(\mathrm{c} \mid \mathrm{w} ; \theta)&#x3D;\frac{\mathrm{e}^{\mathrm{u}<em>{\mathrm{c}} \cdot \mathrm{v}</em>{\mathrm{w}}}}{\sum_{\mathrm{c}^{\prime} \in \mathrm{V}} \mathrm{e}^{\mathrm{u}<em>{\mathrm{c}^{\prime} \cdot \mathrm{v}</em>{\mathrm{w}}}}}<br>$$</p>
+<p>![image-20231111163730178](/Users/zhouyuqi/Library/Application Support/typora-user-images/image-20231111163730178.png)</p>
+<p>假设我们的中心词为w，要预测的背景词为c，那么我们要求的给定中心词生成背景词的条件概率就可以表示成如下形式：<br>$$<br>\mathrm{P}(\mathrm{c} \mid \mathrm{w} ; \theta)=\frac{\mathrm{e}^{\mathrm{u}<em>{\mathrm{c}} \cdot \mathrm{v}</em>{\mathrm{w}}}}{\sum_{\mathrm{c}^{\prime} \in \mathrm{V}} \mathrm{e}^{\mathrm{u}<em>{\mathrm{c}^{\prime} \cdot \mathrm{v}</em>{\mathrm{w}}}}}<br>$$</p>
 <ul>
 <li><p>uc表示u矩阵第c行的向量，vw则表示v矩阵的第w行向量，分别可以看做词c的上下文向量和词w的中心词向量。我们对这两个向量的内积做softmax运算就可以得到上式的条件概率。</p>
 </li>
@@ -272,6 +272,9 @@
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>
