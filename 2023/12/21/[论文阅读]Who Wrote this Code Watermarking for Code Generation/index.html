@@ -11,16 +11,16 @@
   
   
   
-  <meta name="description" content="1234567时间：2023.5作者：Taehyun Lee, Seokhee Hong, Jaewoo Ahn, Ilgee Hong, Hwaran Lee, Sangdoo Yun, Jamin Shin, Gunhee Kim会议：Arxiv开源：https:&#x2F;&#x2F; github.com&#x2F;hongcheki&#x2F;sweet-watermark    ABSTRACT随着大规模语言模型生成能力的显">
+  <meta name="description" content="1234567时间：2023.5作者：Taehyun Lee, Seokhee Hong, Jaewoo Ahn, Ilgee Hong, Hwaran Lee, Sangdoo Yun, Jamin Shin, Gunhee Kim会议：Arxiv开源：https:&#x2F;&#x2F; github.com&#x2F;hongcheki&#x2F;sweet-watermark    Abstract随着大规模语言模型生成能力的显">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Who Wrote this Code? Watermarking for Code Generation">
 <meta property="og:url" content="http://example.com/2023/12/21/[%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB]Who%20Wrote%20this%20Code%20Watermarking%20for%20Code%20Generation/index.html">
 <meta property="og:site_name" content="RainYu">
-<meta property="og:description" content="1234567时间：2023.5作者：Taehyun Lee, Seokhee Hong, Jaewoo Ahn, Ilgee Hong, Hwaran Lee, Sangdoo Yun, Jamin Shin, Gunhee Kim会议：Arxiv开源：https:&#x2F;&#x2F; github.com&#x2F;hongcheki&#x2F;sweet-watermark    ABSTRACT随着大规模语言模型生成能力的显">
+<meta property="og:description" content="1234567时间：2023.5作者：Taehyun Lee, Seokhee Hong, Jaewoo Ahn, Ilgee Hong, Hwaran Lee, Sangdoo Yun, Jamin Shin, Gunhee Kim会议：Arxiv开源：https:&#x2F;&#x2F; github.com&#x2F;hongcheki&#x2F;sweet-watermark    Abstract随着大规模语言模型生成能力的显">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/">
 <meta property="article:published_time" content="2023-12-21T09:50:54.000Z">
-<meta property="article:modified_time" content="2024-01-02T12:26:42.722Z">
+<meta property="article:modified_time" content="2024-01-03T12:40:47.781Z">
 <meta property="article:author" content="RainYu">
 <meta property="article:tag" content="LLM">
 <meta name="twitter:card" content="summary">
@@ -148,7 +148,7 @@
 
 
 
-<h2 id="ABSTRACT"><a href="#ABSTRACT" class="headerlink" title="ABSTRACT"></a>ABSTRACT</h2><p>随着大规模语言模型生成能力的显著提升,人们已经注意到使用它们会带来伦理和法律问题,比如剽窃和版权问题。为了解决这些问题,最近有人提出了几种为大语言模型生成的文本加入水印并进行检测的方法。但是,我们发现以前的方法无法很好地适用于代码生成任务,因为代码的语法和语义特征不同。基于Kirchenbauer等人(2023)的工作,我们提出一种新的水印方法 - 选择性基于熵阈值的水印(SWEET),它只在生成过程中词频分布熵值高的位置“偏爱”标记为“绿色”的词汇,从而保持生成代码的正确性。我们利用熵信息进行统计测试和Z分数来检测水印代码。我们在HumanEval和MBPP上的实验表明,相比其他方法,SWEET显著改进了代码正确性和水印检测性能的帕累托前线。我们还显示出著名的后处理检测方法(如DetectGPT)在这一任务中效果不佳。最后,我们证明设置一个合理的熵阈值并不是一个很大的挑战。</p>
+<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>随着大规模语言模型生成能力的显著提升,人们已经注意到使用它们会带来伦理和法律问题,比如剽窃和版权问题。为了解决这些问题,最近有人提出了几种为大语言模型生成的文本加入水印并进行检测的方法。但是,我们发现以前的方法无法很好地适用于代码生成任务,因为代码的语法和语义特征不同。基于Kirchenbauer等人(2023)的工作,我们提出一种新的水印方法 - 选择性基于熵阈值的水印(SWEET),它只在生成过程中词频分布熵值高的位置“偏爱”标记为“绿色”的词汇,从而保持生成代码的正确性。我们利用熵信息进行统计测试和Z分数来检测水印代码。我们在HumanEval和MBPP上的实验表明,相比其他方法,SWEET显著改进了代码正确性和水印检测性能的帕累托前线。我们还显示出著名的后处理检测方法(如DetectGPT)在这一任务中效果不佳。最后,我们证明设置一个合理的熵阈值并不是一个很大的挑战。</p>
 <span id="more"></span>
 
 <h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>最近，Kirchenbauer 等人（2023a）提出了一种水印技术–我们称之为 WLLM（大型语言模型水印技术）–在标记中嵌入一个隐藏的水印，表明文本是由语言模型生成的。与上述事后检测方法相反，WLLM 通过在生成的文本中嵌入检测信号，以牺牲文本质量为代价提高了检测能力。在每个生成步骤中，WLLM 都会随机地将整个词汇表分为两组（例如，绿表为我们想要嵌入水印的标记，红表为需要避免的标记）。绿色列表中的词组会在其对数值上加上一个标量。这样，模型就更倾向于从绿色列表而不是红色列表中生成标记。要检测文本中的水印，我们可以计算绿色标记的数量，并检查该数量是否具有统计学意义（通过假设检验），从而得出在不了解绿-红规则的情况下，得出模型输出是否生成的结论。</p>
@@ -162,14 +162,52 @@
 </ul>
 <h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>本文提出一种新的水印嵌入方法SWEET:</p>
 <p>它的思路是:只为那些熵值高的词嵌入水印,而不是每个词都嵌入。</p>
-<p>具体做法是:</p>
+<p>文章在Method部分主要描述了SWEET水印嵌入方法的详细内容:</p>
 <ol>
-<li>计算每个词的熵值,选择熵值高于阈值的词。</li>
-<li>对这些词根据概率随机将它们分为绿色和红色两组。</li>
-<li>生成代码时,给绿色词增加偏置,增加它们出现的概率。</li>
-<li>检测时统计绿色词的数量,通过统计检验判断有没有水印嵌入。</li>
+<li>提出了SWEET方法的动机,即WLLM方法直接应用于代码生成任务会出现功能下降和检测失败的问题。</li>
+<li>描述了SWEET方法的生成阶段实现流程:<ul>
+<li>根据词汇表的熵值计算一个熵阈值H。</li>
+<li><strong>只对熵值大于</strong>H的词进行水印嵌入操作。</li>
+<li>将词表随机划分为绿表和红表,给绿表词增加一个logit增益δ。</li>
+</ul>
+</li>
+<li>描述了SWEET方法的检测阶段实现流程:<ul>
+<li>将需要检测代码分为原始代码和LLM生成部分。</li>
+<li>计算每个词的logit和熵值,选择熵大于H的词集S。</li>
+<li>在S词集中统计绿表词数,并根据预期水印比例计算z-score。</li>
+</ul>
+</li>
+<li>阐述了如何设置熵阈值H,以人写代码的熵分布为参考。</li>
+<li>总结提出SWEET方法的核心思想是选择性基于熵信息进行水印嵌入。</li>
 </ol>
-<h2 id="Contributions"><a href="#Contributions" class="headerlink" title="Contributions"></a>Contributions</h2>
+<h2 id="Sample"><a href="#Sample" class="headerlink" title="Sample"></a>Sample</h2><p>展示了一个具体的HumanEval[4]任务例子,这个例子会在后续讨论中反复使用。</p>
+<ul>
+<li>(a) 对照组,直接使用WLLM方法,结果代码错误且水印难以检测。</li>
+<li>(b)~(d) 用不同熵阈值运行SWEET方法:<ul>
+<li>(b) 中位数阈值情况下,部分TOKEN未水印但代码正确。</li>
+<li>(c) 平均数阈值下,更多TOKEN水印且代码正确。</li>
+<li>(d) 第三四分位数阈值下,水印效果最好但代码仍正确。</li>
+</ul>
+</li>
+</ul>
+<p>![HumanEval/4为例](../imgs/[论文阅读]Who Wrote this Code Watermarking for Code Generation/image-20240103170836773.png)</p>
+<p>用于比较 (a) WLLM 和 (b)-(d) 采用不同阈值的 SWEET。文本颜色标注了词块是在绿色还是红色列表中。灰色标记的熵小于阈值，不带水印。黄色背景颜色的强度可视化熵值。</p>
+<p>为什么cd代码和ab不一样，选择的阈值不一样，因此代码结构和水印都不一样    </p>
+<p><strong>那为什么在生成代码过程中绿词的频率会更高，红绿不是随机区分的吗</strong></p>
+<p>这是因为SWEET方法做了一定的“倾向调整”:</p>
+<ul>
+<li>红绿词随机区分后,模型记下哪些是绿词,哪些是红词。</li>
+<li>在真正生成代码时,模型会对绿词赋予一个更高的“logit增益”值(δ)。</li>
+<li>概率公式中,logit越大,对应词的生成概率就越高。</li>
+<li>所以给绿词赋予了更高的logit,就使它在生成过程中频率更高。</li>
+</ul>
+<p>简单说,它是在保留随机性的基础上,增加模型“倾向”优先选择绿词的机制。</p>
+<p>这样做的意义是:</p>
+<ul>
+<li>代码质量不受影响,随机性使红绿词分布不规则。</li>
+<li>但能明确增加绿词的频率,形成更明显的水印信号。</li>
+</ul>
+<h2 id="Contributions"><a href="#Contributions" class="headerlink" title="Contributions"></a><strong>Contributions</strong></h2>
       
     </div>
     <footer class="entry-meta entry-footer">
@@ -199,9 +237,9 @@
     </a>
   
   
-    <a href="/2023/12/21/%5B%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%5DImproving%20Distantly-Supervised%20Named%20Entity%20Recognition%20with%20Self-Collaborative%20Denoising%20Learning/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2023/12/21/Skip-gram%E6%A8%A1%E5%9E%8B%E7%90%86%E8%A7%A3/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">Improving Distantly-Supervised Named Entity Recognition with Self-Collaborative Denoising Learning</div>
+      <div class="article-nav-title">Skip-gram模型理解</div>
     </a>
   
 </nav>
@@ -215,7 +253,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
     
-      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ABSTRACT"><span class="nav-number">1.</span> <span class="nav-text">ABSTRACT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Background"><span class="nav-number">2.</span> <span class="nav-text">Background</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">3.</span> <span class="nav-text">Methodology</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contributions"><span class="nav-number">4.</span> <span class="nav-text">Contributions</span></a></li></ol>
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Abstract"><span class="nav-number">1.</span> <span class="nav-text">Abstract</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Background"><span class="nav-number">2.</span> <span class="nav-text">Background</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">3.</span> <span class="nav-text">Methodology</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sample"><span class="nav-number">4.</span> <span class="nav-text">Sample</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contributions"><span class="nav-number">5.</span> <span class="nav-text">Contributions</span></a></li></ol>
     
     </div>
   </aside>
